@@ -112,7 +112,7 @@ async function operator(proxies = [], targetPlatform, env) {
         let latency = ''
         latency = `${Date.now() - startedAt}`
         $.info(`[${proxy.name}] status: ${status}, latency: ${latency}`)
-        realip=proxy.server+proxt.port
+        realip=proxy.server+proxy.port
         // 判断响应
         if (status == validStatus&&!removeset.has(realip)) {
             removeset.add(realip)
