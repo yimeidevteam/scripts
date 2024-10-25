@@ -38,6 +38,7 @@ async function operator(proxies = [], targetPlatform, env) {
   const failedProxies = []
   const sub = env.source[proxies?.[0]?._subName || proxies?.[0]?.subName]
   const subName = sub?.displayName || sub?.name
+  const removeset=new Set()
 
   const concurrency = parseInt($arguments.concurrency || 10) // 一组并发数
   await executeAsyncTasks(
@@ -111,8 +112,11 @@ async function operator(proxies = [], targetPlatform, env) {
         let latency = ''
         latency = `${Date.now() - startedAt}`
         $.info(`[${proxy.name}] status: ${status}, latency: ${latency}`)
+        realip=proxy.server+proxt.port
         // 判断响应
-        if (status == validStatus) {
+        if (status == validStatus&&!removeset.has(realip)) {
+            removeset.add(realip)
+
           validProxies.push({
             ...proxy,
             name: `${$arguments.show_latency ? `[${latency}] ` : ''}${proxy.name}`,
